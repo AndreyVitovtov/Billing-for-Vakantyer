@@ -21,7 +21,7 @@ class BalancePackage extends Log
     private $db;
 
     public function __construct($userId, $numberVacancies = null, $usedVacancies = null, $price = null,
-                                $packageId = null, $term = null, $typePay = null, $orderId = null, $status = null)
+                                $packageId = null, $term = null, $typePay = null, $orderId = null, $status = 'pending')
     {
         $this->userId = $userId;
         if ($numberVacancies !== null) $this->numberVacancies = $numberVacancies;
@@ -53,7 +53,7 @@ class BalancePackage extends Log
                 'usedVacancies' => $this->usedVacancies,
                 'price' => $this->price,
                 'packageId' => $this->packageId,
-                'term' => ($this->term ?? date('Y-m-d H:i:s', strtotime('+ 100 YEARS', time()))),
+                'term' => ($this->term ?? date('Y-m-d H:i:s', strtotime('+ 10 YEARS', time()))),
                 'typePay' => $this->typePay,
                 'orderId' => $this->orderId,
                 'status' => $this->status
@@ -61,7 +61,8 @@ class BalancePackage extends Log
             return $this->get($this->db->lastInsertId());
         } catch (PDOException $ex) {
             $this->setLog('add', $ex->getMessage());
-            throw new Exception('Failed to add balance package: ' . $this->userId . ', sum: ' . $this->packageId);
+            throw new Exception('Failed to add balance package: ' . $this->userId . ', packageId: ' .
+                $this->packageId);
         }
     }
 
@@ -128,7 +129,8 @@ class BalancePackage extends Log
         try {
             $stmt = $this->db->prepare("
                 UPDATE `balance_package` 
-                SET `status` = :status
+                SET `status` = :status,
+                    `updated` = NOW()
                 WHERE `id` = :id
             ");
             $stmt->execute([
