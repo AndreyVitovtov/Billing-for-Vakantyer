@@ -40,6 +40,18 @@ class Payriff extends Log
         ]);
     }
 
+    public function getStatusOrder($orderId, $sessionId)
+    {
+        return $this->makeRequest('getStatusOrder', [
+            'body' => [
+                'language' => $this->language,
+                'orderId' => $orderId,
+                'sessionId' => $sessionId
+            ],
+            'merchant' => $this->merchant
+        ]);
+    }
+
     public function makeRequest($method, $params, $associative = true)
     {
         $ch = curl_init();

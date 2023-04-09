@@ -56,3 +56,15 @@ VALUES (0, 10),
        (15, 1),
        (5, 0);
 
+CREATE TABLE `orders`
+(
+    `id`         INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `userId`     INT UNSIGNED,
+    `orderId`    VARCHAR(255),
+    `paymentUrl` TEXT,
+    `sessionId`  VARCHAR(255),
+    `code`       VARCHAR(255),
+    `success`    BOOLEAN   DEFAULT 0,
+    `complete`   BOOLEAN   DEFAULT 0,
+    `added`      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
