@@ -10,14 +10,16 @@ class Package extends Log
     public $id;
     public $price;
     public $vacancyCost;
+    public $free;
     private $db;
 
-    public function __construct($id = null, $price = null, $vacancyCost = null)
+    public function __construct($id = null, $price = null, $vacancyCost = null, $free = 0)
     {
         parent::__construct(get_class());
         if($price !== null) $this->price = $price;
         if($id !== null) $this->id = $id;
         if($vacancyCost !== null) $this->vacancyCost = $vacancyCost;
+        if($free !== 0) $this->free = $free;
         $this->db = Database::instance()->getDbh();
     }
 
@@ -25,11 +27,12 @@ class Package extends Log
     {
         try {
             $stmt = $this->db->prepare("
-            INSERT INTO `package` (`price`, `vacancyCost`) VALUES (:price, :vacancyCost)
+            INSERT INTO `package` (`price`, `vacancyCost`, `free`) VALUES (:price, :vacancyCost, :free)
         ");
             $stmt->execute([
                 'price' => $this->price,
-                'vacancyCost' => $this->vacancyCost
+                'vacancyCost' => $this->vacancyCost,
+                'free' => $this->free
             ]);
             return true;
         } catch (PDOException $ex) {
@@ -54,10 +57,10 @@ class Package extends Log
         }
     }
 
-    public function get($id): Package
+    public function get($id)
     {
         $stmt = $this->db->prepare("
-            SELECT `price`, `vacancyCost`, `id` FROM `package` WHERE `id` = :id AND `removed` = 0
+            SELECT `price`, `vacancyCost`, `id`, `free` FROM `package` WHERE `id` = :id AND `removed` = 0
         ");
         $stmt->execute([
             'id' => $id

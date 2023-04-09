@@ -101,4 +101,9 @@ class Balance extends Log
             throw new Exception('Failed to unbalance userId: ' . $this->userId . ', sum: ' . $sum);
         }
     }
+
+    public function getFloat(): float
+    {
+        return floatval($this->get()->balance);
+    }
 }

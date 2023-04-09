@@ -143,4 +143,22 @@ class BalancePackage extends Log
             throw new Exception('Failed to update: ' . $this->userId . ' status: ' . $status);
         }
     }
+
+    public function checkFree()
+    {
+        $stmt = $this->db->prepare("
+            SELECT * 
+            FROM `balance_package` b,
+                 `package` p
+            WHERE p.`id` = b.`packageId`
+            AND b.`userId` = :userId
+            AND p.`free` = 1
+            AND p.`removed` = 0
+            LIMIT 1
+        ");
+        $stmt->execute([
+            'userId' => $this->userId
+        ]);
+        return boolval($stmt->fetchColumn());
+    }
 }

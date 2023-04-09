@@ -17,3 +17,5 @@ require_once 'vendor/autoload.php';
 //
 //var_dump($bp->getPaymentBank());
 
+$balance = (new Balance(1))->writeOff(25);
+echo $balance->getFloat() . ' AZN';

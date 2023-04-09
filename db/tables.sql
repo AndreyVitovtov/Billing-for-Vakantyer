@@ -52,12 +52,12 @@ CREATE TABLE `balance_package`
     KEY bpuserid (`userId`)
 );
 
-INSERT INTO `package` (`price`, `vacancyCost`)
-VALUES (0, 10),
-       (100, 10),
-       (50, 4),
-       (15, 1),
-       (5, 0);
+INSERT INTO `package` (`price`, `vacancyCost`, `free`)
+VALUES (0, 10, 1),
+       (100, 10, 0),
+       (50, 4, 0),
+       (15, 1, 0),
+       (5, 0, 0);
 
 CREATE TABLE `orders`
 (

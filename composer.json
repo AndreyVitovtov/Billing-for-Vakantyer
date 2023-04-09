@@ -14,7 +14,8 @@
     "psr-4": {
       "Model\\": "models",
       "Controller\\": "controllers",
-      "DB\\": "db"
+      "DB\\": "db",
+      "HTML\\": "html"
     }
   },
   "require": {

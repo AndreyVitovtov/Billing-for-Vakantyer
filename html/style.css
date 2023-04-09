@@ -1,0 +1,23 @@
+:root {
+    --button-color: #0c1e70;
+    --button-color-hover: #1730a0;
+}
+
+* {
+    margin: 10px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.button-balance {
+    text-decoration: none;
+    border: solid 2px var(--button-color);
+    border-radius: 15px;
+    color: var(--button-color);
+    padding: 8px 10px;
+}
+
+.button-balance:hover {
+    background-color: var(--button-color-hover);
+    color: #fff;
+}
