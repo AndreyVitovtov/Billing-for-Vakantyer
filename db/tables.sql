@@ -21,6 +21,7 @@ CREATE TABLE `package`
     `id`          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     `price`       FLOAT NOT NULL,
     `vacancyCost` INT   NOT NULL,
+    `free`        BOOLEAN   DEFAULT 0,
     `removed`     BOOLEAN   DEFAULT 0,
     `added`       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -42,8 +43,16 @@ CREATE TABLE `balance_package`
     `usedVacancies`   INT UNSIGNED DEFAULT 0,
     `price`           FLOAT        NOT NULL,
     `packageId`       INT UNSIGNED,
+    `term`            TIMESTAMP    DEFAULT (NOW() + INTERVAL 10 YEAR),
     `added`           TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-    `updated`          TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    `updated`         TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     KEY bpuserid (`userId`)
 );
+
+INSERT INTO `package` (`price`, `vacancyCost`)
+VALUES (0, 10),
+       (100, 10),
+       (50, 4),
+       (15, 1),
+       (5, 0);
 

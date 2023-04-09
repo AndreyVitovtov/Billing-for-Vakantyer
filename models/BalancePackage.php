@@ -14,16 +14,19 @@ class BalancePackage extends Log
     public $usedVacancies;
     public $price;
     public $packageId;
+    public $term;
 
     private $db;
 
-    public function __construct($userId, $numberVacancies = null, $usedVacancies = null, $price = null, $packageId = null)
+    public function __construct($userId, $numberVacancies = null, $usedVacancies = null, $price = null,
+                                $packageId = null, $term = null)
     {
         $this->userId = $userId;
         if ($numberVacancies !== null) $this->numberVacancies = $numberVacancies;
         if ($usedVacancies !== null) $this->usedVacancies = $usedVacancies;
         if ($price !== null) $this->price = $price;
         if ($packageId !== null) $this->packageId = $packageId;
+        if ($term !== null) $this->term = $term;
         parent::__construct(get_class());
         $this->db = Database::instance()->getDbh();
     }
@@ -35,15 +38,16 @@ class BalancePackage extends Log
     {
         try {
             $stmt = $this->db->prepare("
-                INSERT INTO `balance_package` (`userId`, `numberVacancies`, `usedVacancies`, `price`, `packageId`) 
-                VALUES (:userId, :numberVacancies, :usedVacancies, :price, :packageId)
+                INSERT INTO `balance_package` (`userId`, `numberVacancies`, `usedVacancies`, `price`, `packageId`, `term`) 
+                VALUES (:userId, :numberVacancies, :usedVacancies, :price, :packageId, :term)
             ");
             $stmt->execute([
                 'userId' => $this->userId,
                 'numberVacancies' => $this->numberVacancies,
                 'usedVacancies' => $this->usedVacancies,
                 'price' => $this->price,
-                'packageId' => $this->packageId
+                'packageId' => $this->packageId,
+                'term' => ($this->term ?? date('Y-m-d H:i:s', strtotime('+ 100 YEARS', time())))
             ]);
             return $this->get($this->db->lastInsertId());
         } catch (PDOException $ex) {
@@ -59,11 +63,14 @@ class BalancePackage extends Log
             FROM `balance_package`
             WHERE `userId` = :userId
             AND `numberVacancies` > `usedVacancies`
+            AND `term` >= :date
+            AND `numberVacancies` > 0
             ORDER BY `added` " . ($last ? 'DESC' : 'ASC') . "
             LIMIT 1
         ");
         $stmt->execute([
-            'userId' => $this->userId
+            'userId' => $this->userId,
+            'date' => date('Y-m-d H:i:s')
         ]);
         return $stmt->fetchObject(BalancePackage::class, [$this->userId]);
     }
