@@ -52,6 +52,5 @@ class Order extends Log
             $this->setLog('add', 'Failed to add, empty response');
             throw new Exception('Failed to add, empty response');
         }
-
     }
 }

@@ -38,14 +38,17 @@ CREATE TABLE `balance`
 CREATE TABLE `balance_package`
 (
     `id`              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    `userId`          INT UNSIGNED NOT NULL,
-    `numberVacancies` INT UNSIGNED DEFAULT 0,
-    `usedVacancies`   INT UNSIGNED DEFAULT 0,
-    `price`           FLOAT        NOT NULL,
+    `userId`          INT UNSIGNED                                  NOT NULL,
+    `numberVacancies` INT UNSIGNED                     DEFAULT 0,
+    `usedVacancies`   INT UNSIGNED                     DEFAULT 0,
+    `price`           FLOAT                                         NOT NULL,
     `packageId`       INT UNSIGNED,
-    `term`            TIMESTAMP    DEFAULT (NOW() + INTERVAL 10 YEAR),
-    `added`           TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-    `updated`         TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    `term`            TIMESTAMP                        DEFAULT (NOW() + INTERVAL 10 YEAR),
+    `typePay`         ENUM ('bank', 'card')            DEFAULT 'card',
+    `orderId`         INT UNSIGNED                     DEFAULT NULL NULL,
+    `status`          ENUM ('pending', 'sent', 'paid') DEFAULT 'paid',
+    `added`           TIMESTAMP                        DEFAULT CURRENT_TIMESTAMP,
+    `updated`         TIMESTAMP                        DEFAULT CURRENT_TIMESTAMP,
     KEY bpuserid (`userId`)
 );
 
