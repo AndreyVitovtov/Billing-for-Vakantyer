@@ -1,0 +1,25 @@
+{
+  "name": "andre/billing",
+  "description": "Billing for Vakantyer",
+  "authors": [
+    {
+      "name": "AndreyVitovtov",
+      "email": "andrey.vitovtov@gmail.com"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "config.php"
+    ],
+    "psr-4": {
+      "Model\\": "models",
+      "Controller\\": "controllers",
+      "DB\\": "db"
+    }
+  },
+  "require": {
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-pdo": "*"
+  }
+}

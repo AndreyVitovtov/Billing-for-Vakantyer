@@ -1,5 +1,6 @@
-./logs/Controller/
-./logs/Model/
-./vendor/
+logs/Controller/
+logs/Model/
+vendor/
+.idea
 composer.lock
 config.php
