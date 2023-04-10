@@ -2,6 +2,7 @@
 
 use Model\Balance;
 use Model\BalancePackage;
+use Model\Mail;
 use Model\Package;
 use Model\Payriff;
 
@@ -17,5 +18,12 @@ require_once 'vendor/autoload.php';
 //
 //var_dump($bp->getPaymentBank());
 
-$balance = (new Balance(1))->writeOff(25);
-echo $balance->getFloat() . ' AZN';
+//$balance = (new Balance(1))->writeOff(25);
+//echo $balance->getFloat() . ' AZN';
+
+
+(new Mail())->sendMessage(
+    'andrey.vitovtov@gmail.com',
+    'Test',
+    'Test message'
+);
