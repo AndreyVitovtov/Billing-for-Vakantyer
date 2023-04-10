@@ -6,6 +6,7 @@ use DB\Database;
 use Exception;
 use Model\Balance;
 use Model\BalancePackage;
+use Model\Mail;
 use Model\Package;
 use PDOException;
 
@@ -24,7 +25,7 @@ class ReplenishmentOfTheBalance
         if (!isset($_REQUEST['package'])) $this->error404();
         $package = (new Package())->get($_REQUEST['package']);
         if (!$package) $this->error404();
-        if($package->free && (new BalancePackage($_SESSION['userId']))->checkFree()) {
+        if ($package->free && (new BalancePackage($_SESSION['userId']))->checkFree()) {
 //            throw new Exception('Free top up already used');
             echo 'Free top up already used';
             die;
@@ -58,6 +59,13 @@ class ReplenishmentOfTheBalance
             $db->rollBack();
             throw new Exception('Failed to top up balance');
         }
+
+        (new Mail())->sendMessage(
+            'user@email',
+            'Replenishment',
+            'Account topped up on ' . $balancePackage->price
+        );
+
         echo $balance->balance . ' AZN';
     }
 
