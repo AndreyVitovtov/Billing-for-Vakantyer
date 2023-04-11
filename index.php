@@ -22,8 +22,13 @@ require_once 'vendor/autoload.php';
 //echo $balance->getFloat() . ' AZN';
 
 
-(new Mail())->sendMessage(
-    'andrey.vitovtov@gmail.com',
-    'Test',
-    'Test message'
-);
+//(new Mail())->sendMessage(
+//    'andrey.vitovtov@gmail.com',
+//    'Test',
+//    'Test message'
+//);
+
+
+$pay = new Payriff();
+//echo json_encode($pay->createOrder(100, 'Test'));
+echo json_encode($pay->getStatusOrder('535697', 'F60A04F7914E70F9ED789359E0CABACF'));

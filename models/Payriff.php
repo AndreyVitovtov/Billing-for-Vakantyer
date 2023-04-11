@@ -17,26 +17,19 @@ class Payriff extends Log
         parent::__construct(get_class());
     }
 
-    public function createOrder($amount, $cardUuid, $description, $senderCardUID)
+    public function createOrder($amount, $description)
     {
         return $this->makeRequest('createOrder', [
-            [
-                'body' => [
-                    'amount' => $amount,
-                    'approveURL' => $this->approveURL,
-                    'cancelURL' => $this->cancelURL,
-                    'cardUuid' => $cardUuid,
-                    'currencyType' => $this->currencyType,
-                    'declineURL' => $this->declineURL,
-                    'description' => $description,
-                    'directPay' => true,
-                    'installmentPeriod' => 0,
-                    'installmentProductType' => "BIRKART",
-                    'language' => $this->language,
-                    'senderCardUID' => $senderCardUID
-                ],
-                'merchant' => $this->merchant
-            ]
+            'body' => [
+                'amount' => $amount,
+                'currencyType' => $this->currencyType,
+                'description' => $description,
+                'language' => $this->language,
+                'approveURL' => $this->approveURL,
+                'cancelURL' => $this->cancelURL,
+                'declineURL' => $this->declineURL,
+            ],
+            'merchant' => $this->merchant
         ]);
     }
 
@@ -52,7 +45,7 @@ class Payriff extends Log
         ]);
     }
 
-    public function makeRequest($method, $params, $associative = true)
+    private function makeRequest($method, $params, $associative = true)
     {
         $ch = curl_init();
         curl_setopt_array($ch, [
@@ -62,7 +55,7 @@ class Payriff extends Log
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'Authorization: Bearer ' . PAYRIFF_SECRET_KEY
+                'Authorization: ' . PAYRIFF_SECRET_KEY
             ]
         ]);
         $request = curl_exec($ch);
