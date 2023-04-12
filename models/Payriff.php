@@ -17,7 +17,7 @@ class Payriff extends Log
         parent::__construct(get_class());
     }
 
-    public function createOrder($amount, $description)
+    public function createOrder($amount, $description, $hash)
     {
         return $this->makeRequest('createOrder', [
             'body' => [
@@ -25,9 +25,9 @@ class Payriff extends Log
                 'currencyType' => $this->currencyType,
                 'description' => $description,
                 'language' => $this->language,
-                'approveURL' => $this->approveURL,
-                'cancelURL' => $this->cancelURL,
-                'declineURL' => $this->declineURL,
+                'approveURL' => $this->approveURL . $hash,
+                'cancelURL' => $this->cancelURL . $hash,
+                'declineURL' => $this->declineURL . $hash
             ],
             'merchant' => $this->merchant
         ]);
@@ -45,7 +45,7 @@ class Payriff extends Log
         ]);
     }
 
-    private function makeRequest($method, $params, $associative = true)
+    private function makeRequest($method, $params)
     {
         $ch = curl_init();
         curl_setopt_array($ch, [
@@ -65,7 +65,6 @@ class Payriff extends Log
             "\n\nHTTP CODE:\n " . curl_getinfo($ch, CURLINFO_HTTP_CODE)
         );
         curl_close($ch);
-        if ($associative) return json_decode($request, true);
-        return $request;
+        return json_decode($request);
     }
 }
