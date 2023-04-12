@@ -76,5 +76,5 @@ CREATE TABLE `orders`
     KEY orderHash (`hash`)
 );
 
-USE `billing`;
-DROP TABLE `orders`;
+ALTER TABLE `users`
+    ADD COLUMN `balance` FLOAT DEFAULT 0;
