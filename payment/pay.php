@@ -10,7 +10,7 @@ use Model\Payriff;
 
 require_once '../vendor/autoload.php';
 
-if(!isset($_REQUEST['package']) || !isset($_REQUEST['id'])) {
+if (!isset($_REQUEST['package']) || !isset($_REQUEST['id'])) {
     die('Failed. Required parameters not passed');
 }
 
@@ -18,6 +18,10 @@ $packageId = $_REQUEST['package'];
 $userId = $_REQUEST['id'];
 
 $package = (new Package($packageId))->get();
+
+if (!$package) die('Package not found');
+if ($package->free) die('For the selected package, payment is not provided');
+
 $payriff = new Payriff();
 $order = new Order($userId);
 $hash = $order->createHash();
@@ -28,11 +32,16 @@ $response = $payriff->createOrder(
     $hash
 );
 
-if(isset($response->payload)) {
+if (isset($response->payload)) {
     $order->setResponse($response);
-    $order->add($hash, $package->id);
+    try {
+        $order->add($hash, $package->id);
+    } catch (Exception $e) {
+        die($e->getMessage());
+    }
 
     $paymentUrl = $response->payload->paymentUrl ?? '';
 
-    if(!empty($paymentUrl)) header('Location: ' . $paymentUrl);
+    if (!empty($paymentUrl)) header('Location: ' . $paymentUrl);
 }
+echo 'Something went wrong, please try again later.';

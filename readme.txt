@@ -20,8 +20,20 @@ Google будет автоматически изменять поле "От" л
 импорт" и нажать на "Добавить другой адрес электронной почты", после чего назначить его используемым по умолчанию.
 
 
+Бонус:
 Bonus - https://vakantyer.az/bonus/accrue/{userId}/1
+
+Оплата картой:
 100 - https://vakantyer.az/payment/pay/{userId}/2
 50 - https://vakantyer.az/payment/pay/{userId}/3
 15 - https://vakantyer.az/payment/pay/{userId}/4
 5 - https://vakantyer.az/payment/pay/{userId}/5
+
+Оплата "банк":
+100 - https://vakantyer.az/payment/bank/{userId}/2
+50 - https://vakantyer.az/payment/bank/{userId}/3
+15 - https://vakantyer.az/payment/bank/{userId}/4
+5 - https://vakantyer.az/payment/bank/{userId}/5
+
+
+https://docs.google.com/document/d/1nlK-tHBIH0d2bBHXdS2crja5hv9WhhU7aICHw6YB-18/edit#heading=h.gjdgxs

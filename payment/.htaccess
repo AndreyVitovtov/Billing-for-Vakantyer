@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteRule approve\/(\d+)\/(.+) approve.php?userId=$1&hash=$2 [L,QSA]
+RewriteRule cancel\/(\d+)\/(.+) cancel.php?userId=$1&hash=$2 [L,QSA]
+RewriteRule decline\/(\d+)\/(.+) decline.php?userId=$1&hash=$2 [L,QSA]
+RewriteRule pay\/(\d+)\/(\d+) pay.php?id=$1&package=$2 [L,QSA]
+RewriteRule bank\/(\d+)\/(\d+) bank.php?userId=$1&package=$2 [L,QSA]

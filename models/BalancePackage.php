@@ -83,6 +83,7 @@ class BalancePackage extends Log
             AND `numberVacancies` > `usedVacancies`
             AND `term` >= :date
             AND `numberVacancies` > 0
+            AND `numberVacancies` > `usedVacancies`
             ORDER BY `added` " . ($last ? 'DESC' : 'ASC') . "
             LIMIT 1
         ");
@@ -168,5 +169,10 @@ class BalancePackage extends Log
             'userId' => $this->userId
         ]);
         return boolval($stmt->fetchColumn());
+    }
+
+    public function check(): bool
+    {
+        return ($this->numberVacancies ?? 0 - $this->usedVacancies ?? 0) > 0;
     }
 }

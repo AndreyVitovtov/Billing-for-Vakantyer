@@ -13,6 +13,8 @@ ini_set('display_startup_errors', 1);
 
 require_once '../vendor/autoload.php';
 
+sleep(rand(1, 5));
+
 if (isset($_REQUEST['hash']) && isset($_REQUEST['userId'])) {
     $db = Database::instance()->getDbh();
     try {
@@ -23,8 +25,8 @@ if (isset($_REQUEST['hash']) && isset($_REQUEST['userId'])) {
 
         $order = (new Order($userId))->getOrderByHash($hash);
 
-        if(!$order) header('Location: https://vakantyer.az');
-        
+        if (!$order || $order->complete || $order->status) header('Location: ' . REDIRECT_HOME);
+
         if ($order->complete) {
             die('ORDER APPROVED');
         }
@@ -42,7 +44,7 @@ if (isset($_REQUEST['hash']) && isset($_REQUEST['userId'])) {
 
             // TODO: Обновить баланс пользователя в таблице users
 
-            $balancePackage = new BalancePackage(
+            $balancePackage = (new BalancePackage(
                 $userId,
                 $package->getNumberVacancies(),
                 0,
@@ -52,16 +54,16 @@ if (isset($_REQUEST['hash']) && isset($_REQUEST['userId'])) {
                 'card',
                 $order->id,
                 'paid'
-            );
+            ))->add();
         }
 
         $db->commit();
         // Redirect to ...
-        header('Location: https://vakantyer.az/edit');
+        header('Location: ' . REDIRECT_AFTER_PAYMENT);
     } catch (Exception $ex) {
         $db->rollBack();
         echo 'ERROR: ' . $ex->getMessage();
     }
 } else {
-    header('Location: https://vakantyer.az');
+    header('Location: ' . REDIRECT_HOME);
 }
