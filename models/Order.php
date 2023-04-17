@@ -14,6 +14,7 @@ class Order extends Log
      */
     private $response;
     private $db;
+    public $id;
     public $userId;
     public $orderId;
     public $paymentUrl;
@@ -71,19 +72,20 @@ class Order extends Log
     /**
      * @throws Exception
      */
-    public function updateStatus($id, $status)
+    public function updateStatus($status, $id = null)
     {
         try {
             $stmt = $this->db->prepare("
-            UPDATE `orders` 
-            SET `status` = :status
-            WHERE `id` = :id
-        ");
+                UPDATE `orders` 
+                SET `status` = :status
+                WHERE `id` = :id
+            ");
             $stmt->execute([
                 'status' => $status,
-                'id' => $id
+                'id' => $id ?? $this->id
             ]);
         } catch (PDOException $ex) {
+            echo $ex->getMessage();
             $this->setLog('updateStatus', 'Failed to update status');
             throw new Exception('Failed to update status');
         }
@@ -92,19 +94,20 @@ class Order extends Log
     /**
      * @throws Exception
      */
-    public function updateComplete($id, $complete)
+    public function updateComplete($complete, $id = null)
     {
         try {
             $stmt = $this->db->prepare("
-            UPDATE `orders` 
-            SET `status` = :status
-            WHERE `id` = :id
-        ");
+                UPDATE `orders` 
+                SET `status` = :status
+                WHERE `id` = :id
+            ");
             $stmt->execute([
-                'complete' => $complete,
-                'id' => $id
+                'status' => $complete,
+                'id' => $id ?? $this->id
             ]);
         } catch (PDOException $ex) {
+            echo $ex->getMessage();
             $this->setLog('updateComplete', 'Failed to update complete');
             throw new Exception('Failed to update complete');
         }
@@ -126,5 +129,10 @@ class Order extends Log
     public function createHash(): string
     {
         return md5($this->userId . time());
+    }
+
+    public function setResponse($response)
+    {
+        $this->response = $response;
     }
 }

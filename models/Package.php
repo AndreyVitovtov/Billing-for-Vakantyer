@@ -57,13 +57,20 @@ class Package extends Log
         }
     }
 
-    public function get($id)
+    public function get($id = null)
     {
         $stmt = $this->db->prepare("
-            SELECT `price`, `vacancyCost`, `id`, `free` FROM `package` WHERE `id` = :id AND `removed` = 0
+            SELECT 
+                `price`, 
+                `vacancyCost`, 
+                `id`, 
+                `free` 
+            FROM `package` 
+            WHERE `id` = :id 
+              AND `removed` = 0
         ");
         $stmt->execute([
-            'id' => $id
+            'id' => $id ?? $this->id
         ]);
         return $stmt->fetchObject(Package::class);
     }
@@ -75,5 +82,10 @@ class Package extends Log
         ");
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function getNumberVacancies(): int
+    {
+        return intval($this->price / $this->vacancyCost);
     }
 }

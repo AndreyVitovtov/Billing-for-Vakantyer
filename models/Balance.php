@@ -15,11 +15,11 @@ class Balance extends Log
     /**
      * @throws Exception
      */
-    public function __construct($userId, $balance = null)
+    public function __construct($userId, $balance = 0)
     {
         parent::__construct(get_class());
         $this->userId = $userId;
-        if ($balance !== null) $this->balance = $balance;
+        if ($balance !== 0) $this->balance = $balance;
         $this->db = Database::instance()->getDbh();
     }
 
@@ -29,7 +29,7 @@ class Balance extends Log
     public function get(): Balance
     {
         $stmt = $this->db->prepare("
-            SELECT `userId`, `balance` 
+            SELECT * 
             FROM `balance` 
             WHERE `userid` = :userId
         ");
@@ -44,7 +44,7 @@ class Balance extends Log
                 ");
                 $stmt->execute([
                     'userId' => $this->userId,
-                    'balance' => $this->balance
+                    'balance' => $this->balance ?? 0
                 ]);
                 return $this->get();
             } catch (PDOException $ex) {
@@ -64,16 +64,17 @@ class Balance extends Log
         try {
             $stmt = $this->db->prepare("
                 UPDATE `balance` 
-                SET `balance` = `balance` + :sum, 
+                SET `balance` = :sum, 
                     `updated` = NOW() 
                 WHERE `userId` = :userId
             ");
             $stmt->execute([
-                'sum' => $sum,
+                'sum' => $this->getFloat() + $sum,
                 'userId' => $this->userId
             ]);
             return $this->get();
         } catch (PDOException $ex) {
+            echo $ex->getMessage();
             $this->setLog('add', $ex->getMessage());
             throw new Exception('Failed to top up balance userId: ' . $this->userId . ', sum: ' . $sum);
         }

@@ -19,3 +19,9 @@ Google будет автоматически изменять поле "От" л
 записанный в настройках аккаунта. Чтобы изменить адрес "от" в настройках аккаунта нужно перейти на вкладку "Аккаунты и
 импорт" и нажать на "Добавить другой адрес электронной почты", после чего назначить его используемым по умолчанию.
 
+
+Bonus - https://vakantyer.az/bonus/accrue/{userId}/1
+100 - https://vakantyer.az/payment/pay/{userId}/2
+50 - https://vakantyer.az/payment/pay/{userId}/3
+15 - https://vakantyer.az/payment/pay/{userId}/4
+5 - https://vakantyer.az/payment/pay/{userId}/5

@@ -43,12 +43,12 @@ CREATE TABLE `balance_package`
     `usedVacancies`   INT UNSIGNED                     DEFAULT 0,
     `price`           FLOAT                                         NOT NULL,
     `packageId`       INT UNSIGNED,
-    `term`            TIMESTAMP                        DEFAULT (NOW() + INTERVAL 10 YEAR),
+    `term`            TIMESTAMP,                        #DEFAULT NOW() + INTERVAL 10 YEAR,
     `typePay`         ENUM ('bank', 'card')            DEFAULT 'card',
     `orderId`         INT UNSIGNED                     DEFAULT NULL NULL,
     `status`          ENUM ('pending', 'sent', 'paid') DEFAULT 'paid',
-    `added`           TIMESTAMP                        DEFAULT CURRENT_TIMESTAMP,
-    `updated`         TIMESTAMP                        DEFAULT CURRENT_TIMESTAMP,
+    `added`           TIMESTAMP,                        #DEFAULT CURRENT_TIMESTAMP(),
+    `updated`         TIMESTAMP,                        #DEFAULT CURRENT_TIMESTAMP,
     KEY bpuserid (`userId`)
 );
 

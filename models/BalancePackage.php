@@ -19,9 +19,12 @@ class BalancePackage extends Log
     public $orderId;
     public $status;
     private $db;
+    public $added;
+    public $updated;
 
     public function __construct($userId, $numberVacancies = null, $usedVacancies = null, $price = null,
-                                $packageId = null, $term = null, $typePay = null, $orderId = null, $status = 'pending')
+                                $packageId = null, $term = null, $typePay = null, $orderId = null, $status = 'pending',
+                                $added = null, $updated = null)
     {
         $this->userId = $userId;
         if ($numberVacancies !== null) $this->numberVacancies = $numberVacancies;
@@ -32,6 +35,8 @@ class BalancePackage extends Log
         if ($typePay !== null) $this->typePay = $typePay;
         if ($orderId !== null) $this->orderId = $orderId;
         if ($status !== null) $this->status = $status;
+        if ($status !== null) $this->added = $added;
+        if ($status !== null) $this->updated = $updated;
         parent::__construct(get_class());
         $this->db = Database::instance()->getDbh();
     }
@@ -44,8 +49,9 @@ class BalancePackage extends Log
         try {
             $stmt = $this->db->prepare("
                 INSERT INTO `balance_package` (`userId`, `numberVacancies`, `usedVacancies`, `price`, `packageId`, 
-                                               `term`, `typePay`, `orderId`, `status`) 
-                VALUES (:userId, :numberVacancies, :usedVacancies, :price, :packageId, :term, :typePay, :orderId, :status)
+                                               `term`, `typePay`, `orderId`, `status`, `added`, `updated`) 
+                VALUES (:userId, :numberVacancies, :usedVacancies, :price, :packageId, :term, :typePay, :orderId, 
+                        :status, :added, :updated)
             ");
             $stmt->execute([
                 'userId' => $this->userId,
@@ -56,7 +62,9 @@ class BalancePackage extends Log
                 'term' => ($this->term ?? date('Y-m-d H:i:s', strtotime('+ 10 YEARS', time()))),
                 'typePay' => $this->typePay,
                 'orderId' => $this->orderId,
-                'status' => $this->status
+                'status' => $this->status,
+                'added' => $this->added,
+                'updated' => $this->updated
             ]);
             return $this->get($this->db->lastInsertId());
         } catch (PDOException $ex) {

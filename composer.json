@@ -22,6 +22,7 @@
     "ext-curl": "*",
     "ext-json": "*",
     "ext-pdo": "*",
-    "phpmailer/phpmailer": "^6.8"
+    "phpmailer/phpmailer": "^6.8",
+    "ext-http": "*"
   }
 }
